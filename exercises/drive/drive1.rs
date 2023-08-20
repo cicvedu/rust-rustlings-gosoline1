@@ -3,11 +3,16 @@
 // Execute `rustlings hint drive1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 fn modify_by_address(address: usize) {
     // `address` is a memory address, there is an u32 at that address. try modify
     // the u32's value to 0xAABBCCDD
+    let ptr = address as *mut u32;
+    unsafe {
+        
+        *ptr = 0xAABBCCDD;
+    }
 }
 
 
@@ -22,3 +27,4 @@ mod tests {
         assert!(t == 0xAABBCCDD);
     }
 }
+        

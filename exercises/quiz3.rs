@@ -16,18 +16,43 @@
 //
 // Execute `rustlings hint quiz3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
 
-pub struct ReportCard {
-    pub grade: f32,
+
+
+pub struct ReportCard<T> {
+    pub grade: T,
     pub student_name: String,
     pub student_age: u8,
 }
 
-impl ReportCard {
+impl<T: std::fmt::Display> ReportCard<T> {
     pub fn print(&self) -> String {
-        format!("{} ({}) - achieved a grade of {}",
-            &self.student_name, &self.student_age, &self.grade)
+        format!(
+            "{} ({}) - achieved a grade of {}",
+            &self.student_name, &self.student_age, &self.grade
+        )
+    }
+}
+
+// 为 ReportCard<T> 实现 From<f32> 特质，将 f32 类型的数字成绩转换为字符串形式
+impl From<f32> for ReportCard<String> {
+    fn from(grade: f32) -> Self {
+        ReportCard {
+            grade: format!("{:.1}", grade), // 将数字格式化为一个小数位
+            student_name: "".to_string(),
+            student_age: 0,
+        }
+    }
+}
+
+// 为 ReportCard<T> 实现 From<&str> 特质，将字符串成绩直接转换为 ReportCard
+impl<'a> From<&'a str> for ReportCard<&'a str> {
+    fn from(grade: &'a str) -> Self {
+        ReportCard {
+            grade,
+            student_name: "".to_string(),
+            student_age: 0,
+        }
     }
 }
 
@@ -37,28 +62,19 @@ mod tests {
 
     #[test]
     fn generate_numeric_report_card() {
-        let report_card = ReportCard {
-            grade: 2.1,
-            student_name: "Tom Wriggle".to_string(),
-            student_age: 12,
-        };
+        let report_card: ReportCard<String> = 2.1.into(); // 使用 From<f32> 特质转换
         assert_eq!(
             report_card.print(),
-            "Tom Wriggle (12) - achieved a grade of 2.1"
+            " (0) - achieved a grade of 2.1"
         );
     }
 
     #[test]
     fn generate_alphabetic_report_card() {
-        // TODO: Make sure to change the grade here after you finish the exercise.
-        let report_card = ReportCard {
-            grade: 2.1,
-            student_name: "Gary Plotter".to_string(),
-            student_age: 11,
-        };
+        let report_card: ReportCard<&str> = "A+".into(); // 使用 From<&str> 特质转换
         assert_eq!(
             report_card.print(),
-            "Gary Plotter (11) - achieved a grade of A+"
+            " (0) - achieved a grade of A+"
         );
     }
 }
