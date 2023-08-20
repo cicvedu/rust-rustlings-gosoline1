@@ -38,7 +38,7 @@ mod tests {
         assert_eq!(animal_habitat("gopher"), "Burrow")
     }
 
-    #[test]
+    #[test] 
     fn snake_lives_in_desert() {
         assert_eq!(animal_habitat("snake"), "Desert")
     }
